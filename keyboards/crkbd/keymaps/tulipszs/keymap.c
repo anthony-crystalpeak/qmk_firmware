@@ -11,26 +11,6 @@ enum custom_keycodes {
   BACKLIT
 };
 
-enum combos {
-  DF_DASH,
-  JK_ESC,
-  SD_TILDA,
-
-};
-
-const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
-const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
-const uint16_t PROGMEM sd_combo[] = {KC_S, KC_D, COMBO_END};
-
-combo_t key_combos[] = {
-  // Add commonly used dash to home row
-  [DF_DASH]    = COMBO(df_combo, KC_MINS),
-  // For Vim, put Escape on the home row
-  [JK_ESC]    = COMBO(jk_combo, KC_ESC),
-
-  [SD_TILDA]    = COMBO(sd_combo, KC_TILD),
-
-};
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -46,6 +26,27 @@ enum custom_layers {
 // For _RAISE layer
 #define CTL_ESC  LCTL_T(KC_ESC)
 
+enum combos {
+  DASH,
+  ESC,
+  FUNC_LAYER,
+  HOME,
+  END,
+};
+
+const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
+const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM sd_combo[] = {KC_S, KC_D, COMBO_END};
+const uint16_t PROGMEM er_combo[] = {KC_E, KC_R, COMBO_END};
+const uint16_t PROGMEM ui_combo[] = {KC_U, KC_I, COMBO_END};
+
+combo_t key_combos[] = {
+  [DASH]    = COMBO(df_combo, KC_MINS),
+  [ESC]    = COMBO(jk_combo, KC_ESC),
+  [FUNC_LAYER]    = COMBO(sd_combo, MO(_FUNC)),
+  [HOME]    = COMBO(er_combo, KC_HOME),
+  [END]    = COMBO(ui_combo, KC_END),
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT(
@@ -54,9 +55,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
     KC_LSFT,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SEMICOLON,  KC_QUOT ,
  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    KC_HOME,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH , KC_END,
+    KC_LBRC,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH , KC_RBRC,
  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                MT(MOD_LALT, KC_TAB) , LT(_RAISE, KC_BSPC), KC_LSFT,  MT(MOD_LCTL, KC_ENT), LT(_LOWER,KC_SPC),  LT(_FUNC, KC_DEL)
+                MT(MOD_LALT, KC_TAB) , LT(_RAISE, KC_BSPC), KC_LSFT,  MT(MOD_LCTL, KC_ENT), LT(_LOWER,KC_SPC),  MT(MOD_LALT, KC_DEL)
  //`--------------------------'  `--------------------------'
  ),
   [_LOWER] = LAYOUT(
@@ -85,14 +86,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_FUNC] = LAYOUT(
-  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      _______, KC_F1  , KC_F2  , KC_F3   , KC_F4 ,  KC_F5 ,                     KC_F6   , KC_F7  , KC_F8  , KC_F9  , KC_F10 ,_______ ,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, KC_F11 , KC_F12 , QK_MAKE, XXXXXXX, XXXXXXX,                     XXXXXXX , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,_______ ,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, KC_CAPS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     XXXXXXX , XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,XXXXXXX ,
+  //,-----------------------------------------------------.                            ,-----------------------------------------------------.
+      _______, KC_F1  , KC_F2  , KC_F3   , KC_MS_ACCEL0,  KC_F4 ,                         KC_MS_WH_LEFT, KC_MS_WH_DOWN, KC_MS_WH_UP,  KC_MS_LEFT,  XXXXXXX, _______ ,
+  //|--------+--------+--------+--------+--------+--------|                            |--------+--------+--------+--------+--------+--------|
+      _______,  KC_F5   , XXXXXXX, XXXXXXX, KC_MS_ACCEL1, KC_F7 ,                        KC_MS_LEFT,      KC_MS_DOWN,     KC_MS_UP,   KC_MS_RIGHT,    XXXXXXX, _______,
+  //|--------+--------+--------+--------+--------+--------|                            |--------+--------+--------+--------+--------+--------|
+      _______,KC_F8  , KC_F9  , KC_F10, KC_MS_ACCEL2, XXXXXXX,                          XXXXXXX,XXXXXXX,XXXXXXX, XXXXXXX,   QK_BOOT,  _______,
+
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, FUNC   , XXXXXXX
+                                      KC_MS_BTN4, KC_MS_BTN1, KC_TRNS,    KC_MS_BTN3, KC_MS_BTN2, KC_MS_BTN5
                                       //`--------------------------'  `--------------------------'
   )
 };

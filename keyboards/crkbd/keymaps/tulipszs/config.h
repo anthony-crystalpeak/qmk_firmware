@@ -57,4 +57,12 @@ This is the C configuration file for the keymap
 #define ONESHOT_TIMEOUT 2000  /* Time (in ms) before the one shot key is released */
 
 
-
+#define MK_3_SPEED 1
+// #define MOUSEKEY_INTERVAL 10
+// #define MOUSEKEY_DELAY 0
+#define MK_C_OFFSET_0 4
+#define MK_C_INTERVAL_0 16
+#define MK_C_OFFSET_1 4
+#define MK_C_INTERVAL_1 8
+#define MK_C_OFFSET_2 4
+#define MK_C_INTERVAL_2 4
